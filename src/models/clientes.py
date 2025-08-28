@@ -11,7 +11,12 @@ class Clientes(Base):
     telefono = Column(String(20), nullable=False)
     email = Column(String(200))
 
-    def __init__(self,documento_identidad,nombre_completo,direccion,telefono,email):
+    def __init__(self,
+                 documento_identidad,
+                 nombre_completo,
+                 direccion,
+                 telefono,
+                 email):
         self.documento_identidad = documento_identidad
         self.nombre_completo = nombre_completo
         self.direccion = direccion
@@ -23,14 +28,11 @@ class Clientes(Base):
         session.commit()
         return cliente
     
+    def traer_cliente_por_id(id):
+        cliente = session.query(Clientes).filter(Clientes.id == id).first()
+        return cliente
+
     def traer_clientes():
         clientes =  session.query(Clientes).all()
         return clientes
     
-    def as_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-    
-    def obtener_cliente_por_documento_identidad(documento_identidad):
-        cliente = session.query(Clientes).filter(Clientes.documento_identidad == documento_identidad).first()
-        print(cliente)
-        return cliente.as_dict()
